@@ -6,7 +6,7 @@
 #    By: jlitaudo <jlitaudo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/01 13:00:31 by jlitaudo          #+#    #+#              #
-#    Updated: 2022/12/02 15:13:36 by jlitaudo         ###   ########.fr        #
+#    Updated: 2022/12/02 19:17:36 by jlitaudo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,8 @@ OBJ			:= $(addprefix $(OBJ_DIR), $(LIST_OBJ))
 
 # Compiler options
 CC 			:= cc
-FLAG 		:= #-Wall -Wextra -Werror
-FLAGGL		:= -framework OpenGL -framework AppKit #-Ofast -march=native  
+FLAG 		:= -Wall -Wextra -Werror
+FLAGGL		:= -framework OpenGL -framework AppKit -Imnlbx -L./mnlbx#-Ofast -march=native  
 NORM		:= norminette -R -CheckDefine
 
 # define standard colors
