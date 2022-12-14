@@ -6,7 +6,7 @@
 /*   By: jlitaudo <jlitaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 10:56:14 by jlitaudo          #+#    #+#             */
-/*   Updated: 2022/12/02 13:21:38 by jlitaudo         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:07:44 by jlitaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,46 @@
 void	swap_img(t_win *win);
 void	display_info(t_win *win);
 void	img_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	draw_thread(t_thread *t);
 
 void	draw_frac(t_win *win)
 {
-	int	i;
-	int	j;
+	t_thread	tab[8];
+	int			i;
 
-	i = -1;
-	while (++i <= SIZE_X)
+	i = 0;
+	while (i < 8)
 	{
-		j = -1;
-		while (++j <= SIZE_Y)
-			img_mlx_pixel_put(win->img_print, i, j, (*win->fract)(i, j, win));
+		tab[i].id = i;
+		tab[i].win = win;
+		pthread_create(&tab[i].core, NULL, (void *)draw_thread, &tab[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 8)
+	{
+		pthread_join(tab[i].core, NULL);
+		i++;
 	}
 	mlx_put_image_to_window(win->mlx, win->win, win->img_print->img, 0, 0);
 	if (win->zoom < 8)
 		display_info(win);
 	swap_img(win);
+}
+
+void	draw_thread(t_thread *t)
+{
+	int	i;
+	int	j;
+
+	i = SIZE_X / 8 * t->id - 1;
+	while (++i <= SIZE_X / 8 * (t->id + 1))
+	{
+		j = -1;
+		while (++j <= SIZE_Y)
+			img_mlx_pixel_put(t->win->img_print, i, j, \
+				(*t->win->fract)(i, j, t->win));
+	}
 }
 
 void	display_info(t_win *win)

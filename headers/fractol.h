@@ -6,7 +6,7 @@
 /*   By: jlitaudo <jlitaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:35:56 by jlitaudo          #+#    #+#             */
-/*   Updated: 2022/12/02 14:37:26 by jlitaudo         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:13:31 by jlitaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 # include <stdlib.h>
 # include <math.h>
 # include <mlx.h>
+# include <pthread.h>
 # include "ft_printf.h"
 
-# define SIZE_X 800
-# define SIZE_Y 800
+# define SIZE_X 1600
+# define SIZE_Y 1600
 # define TITLE "FRACT-OL"
 
 # define WRG_NB_ARG "NO OPTION SELECTED\n\nSelect one Fractal option:\nJulia : -j\n\
@@ -54,8 +55,8 @@ More Features are coming (TIA and curvatures coloring) Be patient! =)\
 
 # define BASE_DEC "0123456789"
 
-# define MID_SIZE_X 400
-# define MID_SIZE_Y 400
+# define MID_SIZE_X 800
+# define MID_SIZE_Y 800
 # define SCROLL_UP 4
 # define SCROLL_DW 5
 # define MAX_IT 60
@@ -125,6 +126,13 @@ typedef struct s_win
 	unsigned int	(*fract)(double, double, struct s_win *);
 	t_color			*(*make)(char **str);
 }t_win;
+
+typedef struct s_thread
+{
+	t_win	*win;
+	pthread_t	core;
+	int		id;
+}t_thread;
 
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void			init_window(int argc, char **argv, t_win *win);
